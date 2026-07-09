@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import dynamic from "next/dynamic"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Upload, Plus, Trash2, Save, ZoomIn, ZoomOut, RotateCcw, LogOut, LayoutGrid } from "lucide-react"
@@ -9,8 +10,16 @@ import api from "@/lib/api"
 import { Image as ImageType, Annotation } from "@/types"
 import { toast } from "react-hot-toast"
 import ImageGallery from "@/components/ImageGallery"
-import AnnotationCanvas from "@/components/AnnotationCanvas"
 import { cn } from "@/lib/utils"
+
+const AnnotationCanvas = dynamic(() => import("@/components/AnnotationCanvas"), {
+  ssr: false,
+  loading: () => (
+    <div className="glass rounded-xl p-6 text-center text-gray-400">
+      Loading annotation canvas...
+    </div>
+  ),
+})
 
 export default function AnnotatePage() {
   const router = useRouter()

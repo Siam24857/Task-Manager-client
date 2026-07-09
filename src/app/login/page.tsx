@@ -35,7 +35,12 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true)
     try {
-      const response = await api.post("/auth/login/", data)
+      const payload = {
+        email: data.email,
+        password: data.password,
+        username: data.email,
+      }
+      const response = await api.post("/auth/login/", payload)
       const { access, refresh, user } = response.data
       setAuth(user, access, refresh)
       localStorage.setItem("access_token", access)

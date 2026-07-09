@@ -66,14 +66,7 @@ export default function KanbanBoard({ tasks, onEdit, onDelete, onUpdate }: Kanba
     onUpdate(updatedTask)
 
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"}/tasks/${taskId}/`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-        body: JSON.stringify({ status: newStatus }),
-      })
+      await api.patch(`/tasks/${taskId}/`, { status: newStatus })
     } catch (error) {
       console.error("Failed to update task status")
     }
