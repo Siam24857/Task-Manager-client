@@ -16,6 +16,7 @@ import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable"
 import { Task } from "@/types"
 import TaskCard from "./TaskCard"
 import { cn } from "@/lib/utils"
+import api from "@/lib/api"
 
 const COLUMNS = [
   { id: "todo", title: "To Do", color: "from-blue-500 to-blue-600" },

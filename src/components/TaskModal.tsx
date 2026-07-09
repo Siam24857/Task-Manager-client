@@ -50,7 +50,7 @@ export default function TaskModal({ isOpen, onClose, task, onCreate, onUpdate }:
         status: task.status,
         priority: task.priority,
         due_date: task.due_date ? task.due_date.split("T")[0] : "",
-        tags: task.tags.join(", "),
+        tags: task.tags?.join(", ") || "",
       })
     } else {
       reset({
