@@ -42,7 +42,7 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true)
     try {
-      const response = await api.post("/auth/register/", data)
+      const response = await api.post("/auth/register", data)
       const { user } = response.data
       setAuth(user)
       toast.success("Registration successful!")

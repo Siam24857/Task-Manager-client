@@ -40,7 +40,7 @@ export default function LoginPage() {
         password: data.password,
         username: data.email,
       }
-      const response = await api.post("/auth/login/", payload)
+      const response = await api.post("/auth/login", payload)
       const { user } = response.data
       setAuth(user)
       toast.success("Login successful!")
