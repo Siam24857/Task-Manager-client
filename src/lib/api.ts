@@ -15,7 +15,15 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Enable cookie-based authentication
+})
+
+// Add token to requests from localStorage
+api.interceptors.request.use((config) => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 
 api.interceptors.response.use(
@@ -26,13 +34,24 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       try {
-        // Call refresh endpoint - cookies are automatically sent with withCredentials
-        await axios.post(`${API_BASE_URL}/auth/refresh`, {}, {
-          withCredentials: true,
-        })
-        return api(originalRequest)
+        const refreshToken = typeof window !== 'undefined' ? localStorage.getItem('refresh_token') : null
+        if (refreshToken) {
+          const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+            refresh: refreshToken
+          })
+          if (response.data.access) {
+            localStorage.setItem('access_token', response.data.access)
+            if (response.data.refresh) {
+              localStorage.setItem('refresh_token', response.data.refresh)
+            }
+            originalRequest.headers.Authorization = `Bearer ${response.data.access}`
+            return api(originalRequest)
+          }
+        }
       } catch (refreshError) {
         if (typeof window !== 'undefined') {
+          localStorage.removeItem('access_token')
+          localStorage.removeItem('refresh_token')
           window.location.href = '/login'
         }
         return Promise.reject(refreshError)
