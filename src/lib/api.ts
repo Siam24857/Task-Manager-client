@@ -15,16 +15,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-})
-
-api.interceptors.request.use((config) => {
-  if (typeof window !== 'undefined') {
-    const token = window.localStorage.getItem('access_token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-  }
-  return config
+  withCredentials: true, // Enable cookie-based authentication
 })
 
 api.interceptors.response.use(
@@ -35,20 +26,13 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
       try {
-        const refreshToken = typeof window !== 'undefined' ? window.localStorage.getItem('refresh_token') : null
-        const response = await axios.post(`${API_BASE_URL}/auth/login/refresh`, {
-          refresh: refreshToken,
+        // Call refresh endpoint - cookies are automatically sent with withCredentials
+        await axios.post(`${API_BASE_URL}/auth/refresh`, {}, {
+          withCredentials: true,
         })
-        const { access } = response.data
-        if (typeof window !== 'undefined') {
-          window.localStorage.setItem('access_token', access)
-        }
-        originalRequest.headers.Authorization = `Bearer ${access}`
         return api(originalRequest)
       } catch (refreshError) {
         if (typeof window !== 'undefined') {
-          window.localStorage.removeItem('access_token')
-          window.localStorage.removeItem('refresh_token')
           window.location.href = '/login'
         }
         return Promise.reject(refreshError)

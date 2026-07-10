@@ -63,11 +63,15 @@ export default function AnnotatePage() {
     }
   }
 
-  const handleLogout = () => {
-    logout()
-    localStorage.removeItem("access_token")
-    localStorage.removeItem("refresh_token")
-    router.push("/login")
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout")
+    } catch (error) {
+      console.error("Logout error:", error)
+    } finally {
+      logout()
+      router.push("/login")
+    }
   }
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

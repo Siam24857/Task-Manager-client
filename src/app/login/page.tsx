@@ -41,10 +41,8 @@ export default function LoginPage() {
         username: data.email,
       }
       const response = await api.post("/auth/login", payload)
-      const { access, refresh, user } = response.data
-      setAuth(user, access, refresh)
-      localStorage.setItem("access_token", access)
-      localStorage.setItem("refresh_token", refresh)
+      const { user } = response.data
+      setAuth(user)
       toast.success("Login successful!")
       router.push("/tasks")
     } catch (error: any) {
