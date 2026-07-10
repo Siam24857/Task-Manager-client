@@ -44,6 +44,7 @@ export default function RegisterPage() {
     try {
       const response = await api.post("/auth/register", data)
       const { user } = response.data
+      
       setAuth(user)
       toast.success("Registration successful!")
       router.push("/tasks")
