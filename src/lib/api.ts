@@ -4,7 +4,7 @@ const isLocalHost = typeof window !== 'undefined' && ['localhost', '127.0.0.1'].
 
 const rawBaseUrl =
   process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') ||
-  (isLocalHost ? 'http://localhost:8000' : 'https://task-manager-server-one-sigma.vercel.app')
+  (isLocalHost ? 'http://localhost:8000' : 'https://task-manager-server-git-main-sheik-saims-projects.vercel.app')
 
 const normalizedBaseUrl = rawBaseUrl.endsWith('/api') ? rawBaseUrl : `${rawBaseUrl}/api`
 
@@ -36,7 +36,7 @@ api.interceptors.response.use(
       originalRequest._retry = true
       try {
         const refreshToken = typeof window !== 'undefined' ? window.localStorage.getItem('refresh_token') : null
-        const response = await axios.post(`${API_BASE_URL}/auth/login/refresh/`, {
+        const response = await axios.post(`${API_BASE_URL}/auth/login/refresh`, {
           refresh: refreshToken,
         })
         const { access } = response.data
