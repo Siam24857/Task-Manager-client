@@ -10,7 +10,7 @@ import { format } from "date-fns"
 interface TaskCardProps {
   task: Task
   onEdit: (task: Task) => void
-  onDelete: (taskId: number) => void
+  onDelete: (taskId: string) => void
 }
 
 export default function TaskCard({ task, onEdit, onDelete }: TaskCardProps) {

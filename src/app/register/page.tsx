@@ -43,9 +43,9 @@ export default function RegisterPage() {
     setIsLoading(true)
     try {
       const response = await api.post("/auth/register", data)
-      const { user } = response.data
+      const { user, token } = response.data
       
-      setAuth(user)
+      setAuth(user, token)
       toast.success("Registration successful!")
       router.push("/tasks")
     } catch (error: any) {

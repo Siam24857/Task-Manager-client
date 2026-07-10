@@ -27,7 +27,7 @@ const COLUMNS = [
 interface KanbanBoardProps {
   tasks: Task[]
   onEdit: (task: Task) => void
-  onDelete: (taskId: number) => void
+  onDelete: (taskId: string) => void
   onUpdate: (task: Task) => void
 }
 
@@ -55,7 +55,7 @@ export default function KanbanBoard({ tasks, onEdit, onDelete, onUpdate }: Kanba
 
     if (!over) return
 
-    const taskId = Number(active.id)
+    const taskId = String(active.id)
     const newStatus = over.id as string
 
     if (newStatus === activeTask?.status) return

@@ -70,7 +70,7 @@ function TasksPage() {
     setIsModalOpen(true)
   }
 
-  const handleDeleteTask = async (taskId: number) => {
+  const handleDeleteTask = async (taskId: string) => {
     try {
       await api.delete(`/tasks/${taskId}/`)
       setTasks(tasks.filter((t) => t.id !== taskId))

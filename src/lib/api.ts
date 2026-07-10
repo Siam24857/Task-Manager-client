@@ -15,8 +15,27 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Enable session cookies
 })
+
+api.interceptors.request.use(
+  (config) => {
+    if (typeof window !== 'undefined') {
+      try {
+        const raw = window.localStorage.getItem('auth-storage')
+        if (raw) {
+          const parsed = JSON.parse(raw)
+          const token = parsed?.state?.token
+          if (token) {
+            config.headers.Authorization = `Token ${token}`
+          }
+        }
+      } catch {
+      }
+    }
+    return config
+  },
+  (error) => Promise.reject(error)
+)
 
 api.interceptors.response.use(
   (response) => response,
@@ -25,7 +44,6 @@ api.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
-      // Redirect to login on 401
       if (typeof window !== 'undefined') {
         window.location.href = '/login'
       }
