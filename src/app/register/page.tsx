@@ -10,6 +10,7 @@ import { Lock, Mail, User, ArrowRight } from "lucide-react"
 import api from "@/lib/api"
 import { toast } from "react-hot-toast"
 import { cn } from "@/lib/utils"
+import { useAuthStore } from "@/store/authStore"
 
 const registerSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -28,6 +29,7 @@ type RegisterFormData = z.infer<typeof registerSchema>
 export default function RegisterPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const { setAuth } = useAuthStore()
 
   const {
     register,
