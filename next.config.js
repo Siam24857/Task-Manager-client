@@ -9,6 +9,11 @@ const nextConfig = {
         port: '8000',
         pathname: '/media/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'task-manager-servers.vercel.app',
+        pathname: '/media/**',
+      },
     ],
   },
 }

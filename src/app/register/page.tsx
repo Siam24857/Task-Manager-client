@@ -49,12 +49,15 @@ export default function RegisterPage() {
       toast.success("Registration successful!")
       router.push("/tasks")
     } catch (error: any) {
+      const responseData = error.response?.data || {}
       const message =
-        error.response?.data?.detail ||
-        error.response?.data?.email?.[0] ||
-        error.response?.data?.username?.[0] ||
-        error.response?.data?.non_field_errors?.[0] ||
-        JSON.stringify(error.response?.data) ||
+        responseData.detail ||
+        responseData.email?.[0] ||
+        responseData.username?.[0] ||
+        responseData.password?.[0] ||
+        responseData.password2?.[0] ||
+        responseData.non_field_errors?.[0] ||
+        JSON.stringify(responseData) ||
         error.message ||
         "Registration failed"
       toast.error(message)
